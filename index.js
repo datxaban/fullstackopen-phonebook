@@ -38,7 +38,8 @@ const customMorganFormat = ':method :url :status :res[content-length] - :respons
 
 app.use(express.json())
 app.use(cors())
-app.use(morgan(customMorganFormat));
+app.use(morgan(customMorganFormat))
+app.use(express.static('dist'))
 
 
 app.get('/api/info', (request, response) => {
