@@ -71,15 +71,9 @@ app.delete('/api/persons/:id', (request, response, next) => {
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
-  // const body = request.body
-  const { content, important } = request.body
-  // const person = {
-  //   name: body.name,
-  //   number: body.number,
-  // }
+  const { name, number } = request.body
 
-  // Person.findByIdAndUpdate(request.params.id, person, {new: true})
-  Person.findByIdAndUpdate(request.params.id, { content, important }, { new: true, runValidators: true, context: 'query' })
+  Person.findByIdAndUpdate(request.params.id, { name, number }, { new: true, runValidators: true, context: 'query' })
     .then(updatedPerson => {
       response.json(updatedPerson)
     })
@@ -95,21 +89,19 @@ app.post('/api/persons', (request, response, next) => {
     })
   }
 
-
   Person.findOne({ name: body.name })
     .then(existingPerson => {
       if (existingPerson) {
-        return Person.findByIdAndUpdate(existingPerson.id, { number: body.number }, { new: true, runValidators: true })
+        return Person.findByIdAndUpdate(existingPerson.id, { number: body.number }, { new: true, runValidators: true, context: 'query' })
       } else {
         const person = new Person({
           name: body.name,
           number: body.number,
         })
-        return person.save()
+        return person.save().then(savedPerson => {
+          response.json(savedPerson)
+        })
       }
-    })
-    .then(savedPerson => {
-      response.json(savedPerson)
     })
     .catch(error => next(error))
 })
