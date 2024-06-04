@@ -18,30 +18,29 @@ mongoose.connect(url)
 
 const phonebookSchema = new mongoose.Schema({
   name: String,
-  number: String,
+  number: String
 })
 
 const phonebook = mongoose.model('phonebook', phonebookSchema)
 
 if(process.argv.length === 3) {
-    console.log('phonebook:')
-    phonebook.find({}).then(result => {
-        result.forEach(phone => {
-        console.log(phone.name, phone.number)
-        })
-        mongoose.connection.close()
+  phonebook.find({}).then(result => {
+    result.forEach(phone => {
+      console.log(phone.name, phone.number)
     })
-    return;
+    mongoose.connection.close()
+  })
+  return
 }
 
 const contact = new phonebook({
-    name: name,
-    number: number,
+  name: name,
+  number: number,
 })
 
-contact.save().then(result => {
-    console.log(`added ${name} number ${number} to phonebook`)
-    mongoose.connection.close()
+contact.save().then(() => {
+  console.log(`added ${name} number ${number} to phonebook`)
+  mongoose.connection.close()
 })
 
 
