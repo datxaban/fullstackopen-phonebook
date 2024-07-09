@@ -38,7 +38,7 @@ app.use(morgan(customMorganFormat))
 app.use(express.static('dist'))
 
 
-app.get('/api/info', (request, response) => {
+app.get('/info', (request, response) => {
   const date = new Date()
 
   Person.collection.countDocuments()
